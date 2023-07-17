@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Page</title>
+</head>
+<body>
+    <!-- <ul>
+        {% for x in data %}
+          <li>ID : {{x['id']}}</li>
+          <li>a : {{x['title']}}</li>
+          <li>b : {{x['desc']}}</li>
+          <li>c : {{x['author']}}</li>
+          <li>d : {{x['create_at']}}</li>         
+        {% endfor %}
+    </ul> -->
+
+    <!-- <thead>
+        {% for x in data %}
+          <td>ID : {{x['id']}}</td>
+          <td>a : {{x['title']}}</td>
+          <td>b : {{x['desc']}}</td>
+          <td>c : {{x['author']}}</td>
+          <td>d : {{x['create_at']}}</td>         
+        {% endfor %}
+    </thead> -->
+
+
+    <table border = "1" align = "center">
+
+    {% for x in data %}
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Author</th>
+        <th>Time</th>
+        <tr align = "center">
+            <td>{{ x['id'] }}</td>
+            <td>{{ x['title'] }}</td>
+            <td>{{ x['desc'] }}</td>
+            <td>{{ x['author'] }}</td>
+            <td>{{ x['create_at'] }}</td>
+        </tr>
+                
+        <br><br>
+
+    {% endfor %}
+</table>
+
+
+
+
+
+</body>
+</html>
