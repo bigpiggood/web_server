@@ -57,26 +57,29 @@ class Mysql:
         return result
 
 
-    def verify_password(self, email, password):
-        db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
-        curs = db.cursor()
+    def verify_password(self, password, password_1):
+        # db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
+        # curs = db.cursor()
 
-        sql = f'SELECT * FROM user WHERE email = %s'
-        curs.execute(sql, email)
+        # sql = f'SELECT * FROM user WHERE email = %s'
+        # curs.execute(sql)
 
-        rows = curs.fetchall()  
-        print(rows)              
-        # db.commit()
-        db.close()
-        if len(rows) != 0:
-            hash_password = rows[0][4]
-            result = check_password(password, hash_password)
-            if result:
-                print("Welcome to my World")        
-            else:
-                print("MissMatch Password")    
-        else:
-            print("User is not founded")
+        # rows = curs.fetchall()  
+        # print(rows)              
+        # # db.commit()
+        # db.close()
+        # if len(rows) != 0:
+        #     hash_password = rows[0][4]
+        #     result = check_password(password, hash_password)
+        #     if result:
+        #         print("Welcome to my World")        
+        #     else:
+        #         print("MissMatch Password")    
+        # else:
+        #     print("User is not founded")
+
+        result = check_password(password, password_1)
+        return result
 
     def del_user(self, email):
         db = pymysql.connect(host=self.host, user=self.user, db=self.db, password=self.password, charset=self.charset)
@@ -95,7 +98,6 @@ class Mysql:
 
 # mysql.insert_user("garykim", "2@naver.com", "010-8496-9889", "1234")
 
-# mysql.del_user("1@naver.com")
 # mysql.del_user("1@naver.com")
 
 # password = hash_password("1234")

@@ -1,4 +1,4 @@
-from flask import Flask , render_template , request
+from flask import Flask , render_template , request, redirect, session
 from data import Articles
 from mysql import Mysql
 import config
@@ -10,6 +10,10 @@ import pymysql
 app = Flask(__name__)
 
 mysql = Mysql(password=config.PASSWORD)
+app.secret_key = 'eungok'
+
+
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -67,14 +71,14 @@ def register():
        rows = curs.fetchall()  
        print(rows) 
        if rows:
-           return "Persistance Denied"
+           return render_template('register.html', data=1)
        else:
           result = mysql.insert_user(username, email, phone, password) 
           print(result)
-          return "succes" 
+          return redirect('/login')
 
     elif request.method == 'GET':
-        return render_template('register.html')
+        return render_template('register.html',data=0)
 
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
@@ -82,25 +86,28 @@ def login():
         return render_template('login.html')
     
     elif request.method == 'POST':
-         email = request.form.get('email')  
-         password = request.form.get('password') 
+        email = request.form.get('email')  
+        password = request.form.get('password') 
 
-         db = pymysql.connect(host=mysql.host, user=mysql.user, db=mysql.db, password=mysql.password, charset=mysql.charset)
-         curs = db.cursor()
+        db = pymysql.connect(host=mysql.host, user=mysql.user, db=mysql.db, password=mysql.password, charset=mysql.charset)
+        curs = db.cursor()
+        
+        sql = f'SELECT * FROM user WHERE email = %s'
+        curs.execute(sql, email)
 
-         sql = f'SELECT * FROM user WHERE email = %s'
-         curs.execute(sql, email)
-
-         rows = curs.fetchall()  
-         print(rows) 
-
-         if rows:
-            return str([0][0])
-         else:
-            result = mysql.insert_user(email, password) 
-            # print(result)
-            return "User is not founded" 
-
+        rows = curs.fetchall()  
+        print(rows) 
+        
+        if rows:
+            result = mysql.verify_password(password, rows[0][4])
+            if result:
+                session['is_loged_in'] = True
+                session['username'] = rows[0][1]
+                return redirect('/')
+            else:
+                return redirect('/login')
+        else:
+            return render_template('login.html')      
 
 if __name__=='__main__':
     app.run(debug=True)
