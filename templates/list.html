@@ -1,55 +1,79 @@
-
 {% extends "layouts.html" %}
 {% block nav %}
 {% include 'nav.html' %}
 {% endblock %}
 {% block body %}
-<body>
-    <!-- <ul>
-        {% for x in data %}
-          <li>ID : {{x['id']}}</li>
-          <li>a : {{x['title']}}</li>
-          <li>b : {{x['desc']}}</li>
-          <li>c : {{x['author']}}</li>
-          <li>d : {{x['create_at']}}</li>         
-        {% endfor %}
-    </ul> -->
 
-    <!-- <thead>
-        {% for x in data %}
-          <td>ID : {{x['id']}}</td>
-          <td>a : {{x['title']}}</td>
-          <td>b : {{x['desc']}}</td>
-          <td>c : {{x['author']}}</td>
-          <td>d : {{x['create_at']}}</td>         
-        {% endfor %}
-    </thead> -->
+<!-- Begin Page Content -->
+<div class="container">
+    <div class="container-fluid">
+    
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">게시판<a href="/create_list" ><button type="button" class="btn btn-success">게시글 작성</button></a></h1>
+        
+        <p class="mb-4">Are you hungry? <a target="_blank"
+                href="https://datatables.net">this data is important</a>.</p>
+    
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Author</th>
+                                <th>Date</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Author</th>
+                                <th>Date</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for x in data %}
+                            <tr>
+                                <td>{{ x[0] }}</td>
+                                <td>{{ x[1] }}</td>
+                                <td>{{ x[2] }}</td>
+                                <td>{{ x[3] }}</td>
+                                <td>{{ x[4] }}</td>
+                                <td><a href="/edit/{{ x[0] }}"><button class="btn bg-primary">편집</button></a></td>
+                                <td><a href="/delete/{{ x[0] }}"><button class="btn bg-danger" onclick="return confirm_func()">삭제</button></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<body>   
 
 
-    <table border = "1" align = "center">
-
-    {% for x in data %}
-        <th>ID</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Author</th>
-        <th>Time</th>
-        <th>Edit</th>
-        <th>Delete</th>
-        <tr align = "center">
-            <td>{{ x['id'] }}</td>
-            <td>{{ x['title'] }}</td>
-            <td>{{ x['desc'] }}</td>
-            <td>{{ x['author'] }}</td>
-            <td>{{ x['create_at'] }}</td>
-            <td><a href="/edit/{{ x['id'] }}"><button class="btn bg-primary">편집</button></a></td>
-            <td><a href="/delete/{{ x['id'] }}"><button class="btn bg-danger" onclick="return confirm_func()">삭제</button></a></td>
-        </tr>
                 
         <br><br>
 
-    {% endfor %}
+    
 </table>
+
 
 <script>
     function confirm_func(){

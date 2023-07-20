@@ -47,7 +47,7 @@ def index():
     #     data_2 = request.form["hello"]
     #     print(data_2)
         # print(session['is_loged_in'])
-        return render_template('index.html')
+        return render_template('layouts.html')
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello():
@@ -63,12 +63,30 @@ def hello():
 
 @app.route('/list', methods=['GET', 'POST'])
 def list():
-    data = Articles()
-    return render_template('list.html', data=data) 
+    if request.method =="GET":
+        # data = Articles()
+        result = mysql.get_data() 
+        # print(result)
+        return render_template('list.html', data=result) 
+    
+    elif request.method =="POST":
+        title = request.form['title']
+        desc = request.form['desc']
+        author = request.form['author']
+        result = mysql.insert_list(title, desc, author)
+        print(result)
+        return redirect('/list')
+    
+
+@app.route('/create_list', methods=['GET', 'POST'])
+def create_list():
+    if request.method == 'GET':
+        return render_template('dashboard.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    
     if request.method == 'POST':
        username = request.form['username']
        email = request.form['email']  
@@ -79,6 +97,7 @@ def register():
 
        db = pymysql.connect(host=mysql.host, user=mysql.user, db=mysql.db, password=mysql.password, charset=mysql.charset)
        curs = db.cursor()
+
 
        sql = f'SELECT * FROM user WHERE email = %s'
        curs.execute(sql, email)
